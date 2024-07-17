@@ -40,8 +40,7 @@ class AuthController extends Controller
 
         if (!auth()->attempt($loginData)) {
             return response()->json([
-                'message' => 'Invalid credentials'
-            ],401);
+                'message' => 'Invalid credentials'],401);
         }
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
