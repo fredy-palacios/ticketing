@@ -14,11 +14,12 @@ class TicketController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : JsonResponse
     {
         $tickets = Ticket::all();
 
-        return response(['tickets' => TicketResource::collection($tickets),
+        return response()->json([
+            'tickets' => TicketResource::collection($tickets),
             'message' => 'Retrieved successfully'], 200);
     }
 
@@ -34,7 +35,6 @@ class TicketController extends Controller
             'agent_id' => 'required|max:255|regex:/^[A-Za-z0-9_]*$/',
             'subject' => 'required|string|max:255|regex:/^[A-Za-z0-9\s\-\.,\'"]*$/',
             'message' => 'required|string|max:1000',
-            'status' => 'required|in:open,pending,resolved,closed',
             'priority' => 'required|in:low,medium,high',
             'category' => 'required|string|max:50|regex:/^[A-Za-z0-9\s]*$/',
         ]);
