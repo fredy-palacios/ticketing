@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TicketResource;
+use App\Models\Agent;
 use App\Models\Ticket;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,13 +32,23 @@ class TicketController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-            'user_id' => 'required|exists:users,id|max:255',
-            'agent_id' => 'required|max:255|regex:/^[A-Za-z0-9_]*$/',
+            'user_id' => 'exists:users,id|max:255',
             'subject' => 'required|string|max:255|regex:/^[A-Za-z0-9\s\-\.,\'"]*$/',
             'message' => 'required|string|max:1000',
             'priority' => 'required|in:low,medium,high',
             'category' => 'required|string|max:50|regex:/^[A-Za-z0-9\s]*$/',
         ]);
+
+        $agent = Agent::inRandomOrder()->first();
+
+        if (!$agent) {
+            return response()->json([
+                'error' => 'No agents available',
+                'message' => 'Ticket creation failed'
+            ], 400);
+        }
+
+        $data['agent_id'] = $agent->id;
 
         if ($validator->fails()) {
             return response()->json([

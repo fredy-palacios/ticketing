@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id'); // who created the ticket
-            $table->unsignedBigInteger('agent_id')->nullable(); // who is assigned to the ticket
+            $table->unsignedBigInteger('agent_id'); // who is assigned to the ticket
             $table->string('subject');
             $table->text('message');
             $table->enum('status', ['open', 'pending', 'resolved', 'closed'])->default('open');
@@ -25,8 +25,8 @@ return new class extends Migration
             $table->timestamp('closed_at')->nullable();
             $table->timestamps();
             // foreign keys
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('agent_id')->references('id')->on('agent')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('agent_id')->references('id')->on('agents');
         });
     }
 
