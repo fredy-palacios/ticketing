@@ -38,18 +38,18 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (!auth()->attempt($loginData)) {
+        $user = User::where('email', $loginData['email'])->first();
+
+        if (!$user || !Hash::check($loginData['password'], $user->password)) {
             return response()->json([
                 'message' => 'Invalid credentials'],401);
         }
 
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
+        $accessToken = $user->createToken('authToken')->accessToken;
 
         return response()->json([
-            'user' => auth()->user(),
+            'user' => $user,
             'access_token' => $accessToken
         ]);
     }
-
-
 }

@@ -39,16 +39,18 @@ class AgentAuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (!Auth::guard('agent')->attempt($loginData)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+        $agent = Agent::where('email', $loginData['email'])->first();
+
+        if (!$agent || !Hash::check($loginData['password'], $agent->password)) {
+            return response()->json([
+                'message' => 'Invalid credentials'],401);
         }
 
-        $agent = Auth::guard('agent')->user();
         $accessToken = $agent->createToken('agentAuthToken')->accessToken;
 
         return response()->json([
             'agent' => $agent,
-            'access_token' => $accessToken,
+            'access_token' => $accessToken
         ]);
     }
 }
