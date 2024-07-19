@@ -15,8 +15,10 @@ class AgentAuthController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
+            //'last_name' => 'required|max:255',
             'email' => 'required|email|unique:agents',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
+            //'department' => 'max:255',
         ]);
 
         $validatedData['password'] = Hash::make($request->password);
@@ -29,7 +31,6 @@ class AgentAuthController extends Controller
             'agent' => $agent,
             'access_token' => $accessToken
         ]);
-
     }
 
     public function login (Request $request) : JsonResponse

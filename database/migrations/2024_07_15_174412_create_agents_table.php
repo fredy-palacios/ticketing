@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('agents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            //$table->string('last_name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            //$table->boolean('active')->default(true);
+            //$table->string('department')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

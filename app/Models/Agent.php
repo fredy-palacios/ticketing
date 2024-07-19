@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
 class Agent extends Authenticatable
@@ -21,8 +22,11 @@ class Agent extends Authenticatable
      */
     protected $fillable = [
         'name',
+        //'last_name',
         'email',
         'password',
+        //'active',
+        //'department',
     ];
 
     /**
@@ -52,4 +56,10 @@ class Agent extends Authenticatable
     {
         return $this->hasMany(Ticket::class);
     }
+
+    public static function getAgentsId(): array
+    {
+        return DB::table('agents')->pluck('id')->toArray();
+    }
+
 }

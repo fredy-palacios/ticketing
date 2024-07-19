@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 class Ticket extends Model
 {
@@ -24,21 +25,35 @@ class Ticket extends Model
     ];
 
     // relationships
+    private string $status;
+    private \Illuminate\Support\Carbon $closed_at;
+    private \Illuminate\Support\Carbon $resolved_at;
+    private \Illuminate\Support\Carbon $pending_at;
+
     protected static function boot() : void
     {
         parent::boot();
+    }
 
-        static::updating(function ($ticket) {
-            if ($ticket->isDirty('status') && $ticket->status === 'pending') {
-                $ticket->pending_at = now();
-            }
-            if ($ticket->isDirty('status') && $ticket->status === 'resolved') {
-                $ticket->resolved_at = now();
-            }
-            if ($ticket->isDirty('status') && $ticket->status === 'closed') {
-                $ticket->closed_at = now();
-            }
-        });
+    public function close() : void
+    {
+        $this->status = 'closed';
+        $this->closed_at = now();
+        $this->save();
+    }
+
+    public function resolve() : void
+    {
+        $this->status = 'resolved';
+        $this->resolved_at = now();
+        $this->save();
+    }
+
+    public function pending() : void
+    {
+        $this->status = 'pending';
+        $this->pending_at = now();
+        $this->save();
     }
 
     public function user() : BelongsTo
@@ -50,4 +65,14 @@ class Ticket extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function getAgentTicketCounts(): array
+    {
+        return DB::table('tickets')->select('agent_id', DB::raw('count(agent_id) as open_tickets'))
+            ->groupBy('agent_id')
+            ->get()
+            ->all();
+    }
+
+
 }
