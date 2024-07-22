@@ -25,35 +25,23 @@ class Ticket extends Model
     ];
 
     // relationships
-    private string $status;
-    private \Illuminate\Support\Carbon $closed_at;
-    private \Illuminate\Support\Carbon $resolved_at;
-    private \Illuminate\Support\Carbon $pending_at;
+
 
     protected static function boot() : void
     {
         parent::boot();
-    }
 
-    public function close() : void
-    {
-        $this->status = 'closed';
-        $this->closed_at = now();
-        $this->save();
-    }
-
-    public function resolve() : void
-    {
-        $this->status = 'resolved';
-        $this->resolved_at = now();
-        $this->save();
-    }
-
-    public function pending() : void
-    {
-        $this->status = 'pending';
-        $this->pending_at = now();
-        $this->save();
+        static::updating(function ($ticket) {
+            if ($ticket->isDirty('status') && $ticket->status === 'pending') {
+                $ticket->pending_at = now();
+            }
+            if ($ticket->isDirty('status') && $ticket->status === 'resolved') {
+                $ticket->resolved_at = now();
+            }
+            if ($ticket->isDirty('status') && $ticket->status === 'closed') {
+                $ticket->closed_at = now();
+            }
+        });
     }
 
     public function user() : BelongsTo
@@ -73,6 +61,4 @@ class Ticket extends Model
             ->get()
             ->all();
     }
-
-
 }
