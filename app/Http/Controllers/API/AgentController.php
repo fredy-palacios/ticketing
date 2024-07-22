@@ -13,9 +13,20 @@ class AgentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        if (auth()->guard('agent')->check()) {
+            $agent = auth()->guard('agent')->user();
+            $tickets = $agent->tickets;
+
+            return response()->json([
+                'tickets' => $tickets
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Unauthorized'
+        ], 401);
     }
 
     /**

@@ -51,7 +51,7 @@ class Ticket extends Model
 
     public function agent() : BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Agent::class);
     }
 
     public static function getAgentTicketCounts(): array

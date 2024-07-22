@@ -27,3 +27,4 @@ Route::apiResource('/ticket', TicketController::class)->middleware('auth:api');
 
 //Agent routes
 Route::post('/agent/{agent}/ticket/{ticket}/status',[AgentController::class,'changeStatus'])->middleware('auth:agent');
+Route::get('/agent/tickets',[AgentController::class,'index'])->middleware('auth:agent');
