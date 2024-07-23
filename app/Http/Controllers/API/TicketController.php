@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateTicketRequest;
 use App\Http\Resources\TicketResource;
 use App\Models\Agent;
 use App\Models\Ticket;
@@ -27,30 +28,14 @@ class TicketController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(CreateTicketRequest $request): JsonResponse
     {
-        $data = $request->all();
-
-        $validator = Validator::make($data, [
-            'user_id' => 'exists:users,id|max:255',
-            'subject' => 'required|string|max:255|regex:/^[A-Za-z0-9\s\-\.,\'"]*$/',
-            'message' => 'required|string|max:1000',
-            'priority' => 'required|in:low,medium,high',
-            'category' => 'required|string|max:50|regex:/^[A-Za-z0-9\s]*$/',
-        ]);
-
-        // Assign ticket to agent_id with the least tickets
-        $data['agent_id'] = $this->assign();
+        $data = $request->validated(); // Get validated data
+        $data['agent_id'] = $this->assign(); // Assign ticket to agent
 
         if ($this->assign() === null) {
             return response()->json([
                 'message' => 'No agents available'], 404);
-        }
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors(),
-                'message' => 'Validation failed'], 400);
         }
 
         $ticket = Ticket::create($data);
@@ -73,25 +58,9 @@ class TicketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Ticket $ticket): JsonResponse
+    public function update(Request $request, Ticket $ticket)
     {
-        $data = $request->only('status');
-
-        $validator = Validator::make($data, [
-            'status' => 'required|in:open,pending,resolved,closed',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors(),
-                'message' => 'Validation failed'], 400);
-        }
-
-        $ticket->update($data);
-
-        return response()->json([
-            'ticket' => new TicketResource($ticket),
-            'message' => 'Updated successfully'], 200);
+        //
     }
 
     /**
@@ -165,5 +134,54 @@ class TicketController extends Controller
         });
 
         return $minTicketsElement->agent_id;
+    }
+
+    //methods to change status of ticket
+    public function updateStatusToPending($id): JsonResponse
+    {
+        $ticket = Ticket::find($id);
+
+        if (!$ticket) {
+            return response()->json([
+                'message' => 'Ticket not found'], 404);
+        }
+
+        $ticket->markAsPending();
+
+        return response()->json([
+            'ticket' => new TicketResource($ticket),
+            'message' => 'Updated successfully'], 200);
+    }
+
+    public function updateStatusToResolved($id): JsonResponse
+    {
+        $ticket = Ticket::find($id);
+
+        if (!$ticket) {
+            return response()->json([
+                'message' => 'Ticket not found'], 404);
+        }
+
+        $ticket->markAsResolved();
+
+        return response()->json([
+            'ticket' => new TicketResource($ticket),
+            'message' => 'Updated successfully'], 200);
+    }
+
+    public function updateStatusToClosed($id): JsonResponse
+    {
+        $ticket = Ticket::find($id);
+
+        if (!$ticket) {
+            return response()->json([
+                'message' => 'Ticket not found'], 404);
+        }
+
+        $ticket->markAsClosed();
+
+        return response()->json([
+            'ticket' => new TicketResource($ticket),
+            'message' => 'Updated successfully'], 200);
     }
 }

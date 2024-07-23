@@ -3,24 +3,21 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class AuthController extends Controller
+class UserAuthController extends Controller
 {
-    public function register(Request $request) : JsonResponse
+    public function register(UserRegisterRequest $request) : JsonResponse
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed'
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
         ]);
-
-        $validatedData['password'] = Hash::make($request->password);
-
-        $user = User::create($validatedData);
 
         $accessToken = $user->createToken('authToken')->accessToken;
 
@@ -28,16 +25,11 @@ class AuthController extends Controller
             'user' => $user,
             'access_token' => $accessToken
         ]);
-
     }
 
-    public function login (Request $request) : JsonResponse
+    public function login (LoginRequest $request) : JsonResponse
     {
-        $loginData = $request->validate([
-            'email'=> 'email|required',
-            'password' => 'required'
-        ]);
-
+        $loginData = $request->validated(); // Get validated data
         $user = User::where('email', $loginData['email'])->first();
 
         if (!$user || !Hash::check($loginData['password'], $user->password)) {

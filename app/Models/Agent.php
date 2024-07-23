@@ -52,6 +52,11 @@ class Agent extends Authenticatable
         ];
     }
 
+    public function find(int $id): object
+    {
+        return DB::table('agents')->find($id);
+    }
+
     public function tickets() : HasMany
     {
         return $this->hasMany(Ticket::class);

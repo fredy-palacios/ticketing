@@ -40,9 +40,23 @@ class AgentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Agent $agent)
+    public function get(Request $request)
     {
-        //
+        $id_agent = $request->input('id_agent');
+        $agent = (new Agent)->find($id_agent);
+
+        return response()->json([
+            'message' => 'Unauthorized'
+        ], 401);
+    }
+
+    public function getAll(Request $request)
+    {
+        $agents = Agent::all();
+
+        return response()->json([
+            'agents' => $agents
+        ]);
     }
 
     /**

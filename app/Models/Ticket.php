@@ -24,24 +24,9 @@ class Ticket extends Model
         'closed_at',
     ];
 
-    // relationships
-
-
     protected static function boot() : void
     {
         parent::boot();
-
-        static::updating(function ($ticket) {
-            if ($ticket->isDirty('status') && $ticket->status === 'pending') {
-                $ticket->pending_at = now();
-            }
-            if ($ticket->isDirty('status') && $ticket->status === 'resolved') {
-                $ticket->resolved_at = now();
-            }
-            if ($ticket->isDirty('status') && $ticket->status === 'closed') {
-                $ticket->closed_at = now();
-            }
-        });
     }
 
     public function user() : BelongsTo
@@ -60,5 +45,30 @@ class Ticket extends Model
             ->groupBy('agent_id')
             ->get()
             ->all();
+    }
+
+    //methods to change status of ticket
+    public function markAsPending(): void
+    {
+        $this->update([
+            'status' => 'pending',
+            'pending_at' => now(),
+        ]);
+    }
+
+    public function markAsResolved(): void
+    {
+        $this->update([
+            'status' => 'resolved',
+            'resolved_at' => now(),
+        ]);
+    }
+
+    public function markAsClosed(): void
+    {
+        $this->update([
+            'status' => 'closed',
+            'closed_at' => now(),
+        ]);
     }
 }

@@ -3,27 +3,21 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AgentRegisterRequest;
+use App\Http\Requests\LoginRequest;
 use App\Models\Agent;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AgentAuthController extends Controller
 {
-    public function register(Request $request) : JsonResponse
+    public function register(AgentRegisterRequest $request) : JsonResponse
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            //'last_name' => 'required|max:255',
-            'email' => 'required|email|unique:agents',
-            'password' => 'required|confirmed',
-            //'department' => 'max:255',
+        $agent = Agent::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
         ]);
-
-        $validatedData['password'] = Hash::make($request->password);
-
-        $agent = Agent::create($validatedData);
 
         $accessToken = $agent->createToken('agentAuthToken')->accessToken;
 
@@ -33,13 +27,9 @@ class AgentAuthController extends Controller
         ]);
     }
 
-    public function login (Request $request) : JsonResponse
+    public function login (LoginRequest $request) : JsonResponse
     {
-        $loginData = $request->validate([
-            'email'=> 'email|required',
-            'password' => 'required'
-        ]);
-
+        $loginData = $request->validated(); // Get validated data
         $agent = Agent::where('email', $loginData['email'])->first();
 
         if (!$agent || !Hash::check($loginData['password'], $agent->password)) {
