@@ -4,14 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserAuthController extends Controller
 {
-    public function register(UserRegisterRequest $request) : JsonResponse
+    public function register(RegisterUserRequest $request) : JsonResponse
     {
         $user = User::create([
             'name' => $request->name,
