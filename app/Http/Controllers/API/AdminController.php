@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterAgentRequest;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,11 +40,47 @@ class AdminController extends Controller
         ]);
     }
 
-    public function getAgent($id): JsonResponse
+    public function getAgentById($id): JsonResponse
     {
         $agent = User::getAgentById($id);
         return response()->json([
             'agent' => $agent,
+            'message' => 'Retrieved successfully'
+        ]);
+    }
+
+    public function getAllUsers(): JsonResponse
+    {
+        $users = User::getAllUsers();
+        return response()->json([
+            'users' => $users,
+            'message' => 'Retrieved successfully'
+        ]);
+    }
+
+    public function getUserById($id): JsonResponse
+    {
+        $user = User::getUserById($id);
+        return response()->json([
+            'user' => $user,
+            'message' => 'Retrieved successfully'
+        ]);
+    }
+
+    public function getAllTickets(): JsonResponse
+    {
+        $tickets = Ticket::all();
+        return response()->json([
+            'tickets' => $tickets,
+            'message' => 'Retrieved successfully'
+        ]);
+    }
+
+    public function getTicketById($id): JsonResponse
+    {
+        $ticket = Ticket::getTicketById($id);
+        return response()->json([
+            'ticket' => $ticket,
             'message' => 'Retrieved successfully'
         ]);
     }

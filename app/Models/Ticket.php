@@ -71,4 +71,10 @@ class Ticket extends Model
     {
         return DB::table('tickets')->where('id', $id)->first();
     }
+
+    public static function getTicketById(int $id): object
+    {
+        return DB::table('tickets')->where('id', $id)->first();
+    }
+
 }

@@ -31,9 +31,16 @@ Route::middleware(['auth:api', 'role:agent'])->prefix('agent')->group(function (
 
 //Admin routes
 Route::middleware(['auth:api', 'role:admin'])->prefix('admin')->group(function () {
+    //agent
     Route::post('/agent/create',[AdminController::class,'createAgent']);
     Route::get('/agents',[AdminController::class,'getAllAgents']);
-    Route::get('/agent/{id}',[AdminController::class,'getAgent']);
+    Route::get('/agent/{id}',[AdminController::class,'getAgentById']);
+    //user
+    Route::get('/users',[AdminController::class,'getAllUsers']);
+    Route::get('/user/{id}',[AdminController::class,'getUserById']);
+    //tickets
+    Route::get('/tickets',[AdminController::class,'getAllTickets']);
+    Route::get('/ticket/{id}',[AdminController::class,'getTicketById']);
 });
 
 //Mixed routes Agent and User

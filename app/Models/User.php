@@ -83,4 +83,16 @@ class User extends Authenticatable
     {
         return DB::table('users')->where('role', self::ROLE_AGENT)->where('id', $id)->first();
     }
+
+    //get all users
+    public static function getAllUsers(): array
+    {
+        return DB::table('users')->where('role', self::ROLE_USER)->get()->all();
+    }
+
+    //get user
+    public static function getUserById(int $id): object
+    {
+        return DB::table('users')->where('role', self::ROLE_USER)->where('id', $id)->first();
+    }
 }
