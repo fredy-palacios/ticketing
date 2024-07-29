@@ -138,7 +138,7 @@ class TicketController extends Controller
     //methods to change status of ticket
     public function updateStatusToPending($id): JsonResponse
     {
-        $ticket = Ticket::find($id);
+        $ticket = Ticket::findById($id);
 
         if (!$ticket) {
             return response()->json([
@@ -154,7 +154,7 @@ class TicketController extends Controller
 
     public function updateStatusToResolved($id): JsonResponse
     {
-        $ticket = Ticket::find($id);
+        $ticket = Ticket::findById($id);
 
         if (!$ticket) {
             return response()->json([
@@ -170,7 +170,7 @@ class TicketController extends Controller
 
     public function updateStatusToClosed($id): JsonResponse
     {
-        $ticket = Ticket::find($id);
+        $ticket = Ticket::findById($id);
 
         if (!$ticket) {
             return response()->json([

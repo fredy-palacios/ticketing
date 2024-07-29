@@ -70,4 +70,10 @@ class User extends Authenticatable
     {
         return DB::table('users')->where('role', self::ROLE_AGENT)->pluck('id')->toArray();
     }
+
+    //get all agents
+    public static function getAllAgents(): array
+    {
+        return DB::table('users')->where('role', self::ROLE_AGENT)->get()->all();
+    }
 }

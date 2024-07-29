@@ -66,4 +66,9 @@ class Ticket extends Model
             'closed_at' => now(),
         ]);
     }
+
+    public static function findById(int $id): ?Ticket
+    {
+        return DB::table('tickets')->where('id', $id)->first();
+    }
 }
