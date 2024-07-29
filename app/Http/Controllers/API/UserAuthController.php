@@ -16,7 +16,8 @@ class UserAuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
+            'role' => 'user' //Default role
         ]);
 
         $accessToken = $user->createToken('authToken')->accessToken;

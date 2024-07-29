@@ -11,6 +11,7 @@ class AgentRegisterRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        //Only admin can register agents
         return true;
     }
 
@@ -23,7 +24,7 @@ class AgentRegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:agents',
+            'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string|min:8|same:password'
         ];

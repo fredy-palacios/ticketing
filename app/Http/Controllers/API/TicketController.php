@@ -5,11 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTicketRequest;
 use App\Http\Resources\TicketResource;
-use App\Models\Agent;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
 {
@@ -81,7 +80,7 @@ class TicketController extends Controller
 
     public function assign(): int
     {
-        $agentsId = Agent::getAgentsId();// Get all agents' IDs
+        $agentsId = User::getAgentsId();// Get all agents' IDs
         $agentsWithTickets = Ticket::getAgentTicketCounts(); // Get all agents with ticket counts
 
         $idAgentAssigned = $this->getAgentWithLeastTickets($agentsId, $agentsWithTickets);
@@ -182,6 +181,6 @@ class TicketController extends Controller
 
         return response()->json([
             'ticket' => new TicketResource($ticket),
-            'message' => 'Updated successfully'], 200);
+            'message' => 'Closed successfully'], 200);
     }
 }

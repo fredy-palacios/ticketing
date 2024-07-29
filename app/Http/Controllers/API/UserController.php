@@ -61,22 +61,4 @@ class UserController extends Controller
     {
         //
     }
-
-    //close ticket
-    public function closeTicket(Request $request, $ticket): JsonResponse
-    {
-        if (auth()->guard('api')->check()) {
-            $ticket = Ticket::find($ticket);
-            $ticket->status = 'closed';
-            $ticket->save();
-            return response()->json([
-                'ticket' => $ticket,
-                'message' => 'Ticket closed successfully'
-            ]);
-        }
-
-        return response()->json([
-            'message' => 'Unauthorized'
-        ], 401);
-    }
 }

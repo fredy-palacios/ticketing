@@ -34,11 +34,6 @@ class Ticket extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function agent() : BelongsTo
-    {
-        return $this->belongsTo(Agent::class);
-    }
-
     public static function getAgentTicketCounts(): array
     {
         return DB::table('tickets')->select('agent_id', DB::raw('count(agent_id) as open_tickets'))

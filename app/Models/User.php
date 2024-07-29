@@ -7,11 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens,HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
+
+    const ROLE_ADMIN = 'admin';
+    const ROLE_AGENT = 'agent';
+    const ROLE_USER = 'user';
+
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -33,6 +40,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    private string $role;
 
     /**
      * Get the attributes that should be cast.
@@ -47,8 +55,19 @@ class User extends Authenticatable
         ];
     }
 
-    public function tickets() : HasMany
+    public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    //get agent by id
+    public static function getAgentsId(): array
+    {
+        return DB::table('users')->where('role', self::ROLE_AGENT)->pluck('id')->toArray();
     }
 }
