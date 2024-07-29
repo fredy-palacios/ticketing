@@ -32,8 +32,8 @@ Route::middleware(['auth:api', 'role:agent'])->prefix('agent')->group(function (
 //Admin routes
 Route::middleware(['auth:api', 'role:admin'])->prefix('admin')->group(function () {
     Route::post('/agent/create',[AdminController::class,'createAgent']);
-    //Route::get('/agents',[AgentController::class,'getAll']);
-    //Route::get('/agent/{agent}',[AgentController::class,'get']);
+    Route::get('/agents',[AdminController::class,'getAllAgents']);
+    Route::get('/agent/{id}',[AdminController::class,'getAgent']);
 });
 
 //Mixed routes Agent and User

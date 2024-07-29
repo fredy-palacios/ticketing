@@ -29,4 +29,22 @@ class AdminController extends Controller
             'message' => 'Agent created successfully'
         ]);
     }
+
+    public function getAllAgents(): JsonResponse
+    {
+        $allAgents = User::getAllAgents();
+        return response()->json([
+            'agents' => $allAgents,
+            'message' => 'Retrieved successfully'
+        ]);
+    }
+
+    public function getAgent($id): JsonResponse
+    {
+        $agent = User::getAgentById($id);
+        return response()->json([
+            'agent' => $agent,
+            'message' => 'Retrieved successfully'
+        ]);
+    }
 }
