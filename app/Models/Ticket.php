@@ -77,4 +77,8 @@ class Ticket extends Model
         return DB::table('tickets')->where('id', $id)->first();
     }
 
+    public static function getAllTicketsByAgent(int $agentId): array
+    {
+        return DB::table('tickets')->where('agent_id', $agentId)->get()->all();
+    }
 }

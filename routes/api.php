@@ -41,6 +41,7 @@ Route::middleware(['auth:api', 'role:admin'])->prefix('admin')->group(function (
     //tickets
     Route::get('/tickets',[AdminController::class,'getAllTickets']);
     Route::get('/ticket/{id}',[AdminController::class,'getTicketById']);
+    Route::get('/agent/{id}/tickets',[AdminController::class,'getAllTicketsByAgent']);
 });
 
 //Mixed routes Agent and User

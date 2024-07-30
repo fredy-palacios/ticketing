@@ -84,4 +84,13 @@ class AdminController extends Controller
             'message' => 'Retrieved successfully'
         ]);
     }
+
+    public function getAllTicketsByAgent($id): JsonResponse
+    {
+        $tickets = Ticket::getAllTicketsByAgent($id);
+        return response()->json([
+            'tickets' => $tickets,
+            'message' => 'Retrieved successfully'
+        ]);
+    }
 }
