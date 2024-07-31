@@ -29,6 +29,7 @@ class Ticket extends Model
         parent::boot();
     }
 
+
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -69,16 +70,11 @@ class Ticket extends Model
 
     public static function findById(int $id): ?Ticket
     {
-        return DB::table('tickets')->where('id', $id)->first();
+        return Ticket::where('id', $id)->first();
     }
 
-    public static function getTicketById(int $id): object
+    public static function getAllTicketsByAgent(int $agentId): ?array
     {
-        return DB::table('tickets')->where('id', $id)->first();
-    }
-
-    public static function getAllTicketsByAgent(int $agentId): array
-    {
-        return DB::table('tickets')->where('agent_id', $agentId)->get()->all();
+        return Ticket::where('agent_id', $agentId)->get()->all();
     }
 }
