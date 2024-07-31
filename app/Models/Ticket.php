@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 
 class Ticket extends Model
 {
+    protected $table = 'tickets';
+
     use HasFactory;
 
     protected $fillable = [
@@ -28,7 +30,6 @@ class Ticket extends Model
     {
         parent::boot();
     }
-
 
     public function user() : BelongsTo
     {
@@ -70,11 +71,11 @@ class Ticket extends Model
 
     public static function findById(int $id): ?Ticket
     {
-        return Ticket::where('id', $id)->first();
+        return self::where('id', $id)->first();
     }
 
     public static function getAllTicketsByAgent(int $agentId): ?array
     {
-        return Ticket::where('agent_id', $agentId)->get()->all();
+        return self::where('agent_id', $agentId)->get()->all();
     }
 }

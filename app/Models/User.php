@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
-use phpseclib3\System\SSH\Agent;
 
 class User extends Authenticatable
 {
@@ -69,30 +67,30 @@ class User extends Authenticatable
     //get agent by id
     public static function getAgentsId(): array
     {
-        return DB::table('users')->where('role', self::ROLE_AGENT)->pluck('id')->toArray();
+        return self::where('role', self::ROLE_AGENT)->get()->pluck('id')->all();
     }
 
     //get all agents
-    public static function getAllAgents(): array
+    public static function getAllAgents(): ?array
     {
-        return DB::table('users')->where('role', self::ROLE_AGENT)->get()->all();
+        return self::where('role', self::ROLE_AGENT)->get()->all();
     }
 
     //get agent
-    public static function getAgentById(int $id): object
+    public static function getAgentById(int $id): ?User
     {
-        return DB::table('users')->where('role', self::ROLE_AGENT)->where('id', $id)->first();
+        return self::where('role', self::ROLE_AGENT)->find($id);
     }
 
     //get all users
-    public static function getAllUsers(): array
+    public static function getAllUsers(): ?array
     {
-        return DB::table('users')->where('role', self::ROLE_USER)->get()->all();
+        return self::where('role', self::ROLE_USER)->get()->all();
     }
 
     //get user
-    public static function getUserById(int $id): object
+    public static function getUserById(int $id): ?User
     {
-        return DB::table('users')->where('role', self::ROLE_USER)->where('id', $id)->first();
+        return self::where('role', self::ROLE_USER)->find($id);
     }
 }

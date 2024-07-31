@@ -54,7 +54,7 @@ class AdminController extends Controller
         }
 
         return response()->json([
-            'agent' => UserResource::collection($agent),
+            'agent' => new UserResource($agent),
             'message' => 'Retrieved successfully'
         ]);
     }
@@ -80,7 +80,7 @@ class AdminController extends Controller
         }
 
         return response()->json([
-            'user' => UserResource::collection($user),
+            'user' => new UserResource($user),
             'message' => 'Retrieved successfully'
         ]);
     }
@@ -107,7 +107,7 @@ class AdminController extends Controller
         }
 
         return response()->json([
-            'ticket' => $ticket,
+            'ticket' => new TicketResource($ticket),
             'message' => 'Retrieved successfully'
         ],200);
     }
