@@ -30,7 +30,7 @@ class AdminController extends Controller
             'agent' => new UserResource($agent),
             'access_token' => $accessToken,
             'message' => 'Agent created successfully'
-        ]);
+        ],201);
     }
 
     public function getAllAgents(): JsonResponse
@@ -43,7 +43,7 @@ class AdminController extends Controller
         return response()->json([
             'agents' => UserResource::collection($allAgents),
             'message' => 'Retrieved successfully'
-        ]);
+        ],200);
     }
 
     public function getAgentById($id): JsonResponse
@@ -56,7 +56,7 @@ class AdminController extends Controller
         return response()->json([
             'agent' => new UserResource($agent),
             'message' => 'Retrieved successfully'
-        ]);
+        ],200);
     }
 
     public function getAllUsers(): JsonResponse
@@ -69,7 +69,7 @@ class AdminController extends Controller
         return response()->json([
             'users' => UserResource::collection($users),
             'message' => 'Retrieved successfully'
-        ]);
+        ],200);
     }
 
     public function getUserById($id): JsonResponse
@@ -82,7 +82,7 @@ class AdminController extends Controller
         return response()->json([
             'user' => new UserResource($user),
             'message' => 'Retrieved successfully'
-        ]);
+        ],200);
     }
 
     public function getAllTickets(): JsonResponse
@@ -95,7 +95,7 @@ class AdminController extends Controller
         return response()->json([
             'tickets' => TicketResource::collection($tickets),
             'message' => 'Retrieved successfully'
-        ]);
+        ],200);
     }
 
     public function getTicketById($id): JsonResponse

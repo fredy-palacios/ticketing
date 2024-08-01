@@ -33,8 +33,7 @@ class TicketController extends Controller
         $data['agent_id'] = $this->assign(); // Assign ticket to agent
 
         if ($this->assign() === null) {
-            return response()->json([
-                'message' => 'No agents available'], 404);
+            return response()->json(['message' => 'No agents available'], 404);
         }
 
         $ticket = Ticket::create($data);
