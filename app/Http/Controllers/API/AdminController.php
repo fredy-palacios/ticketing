@@ -124,4 +124,17 @@ class AdminController extends Controller
             'message' => 'Retrieved successfully',
         ],200);
     }
+
+    public function getAllTicketsByUser($id): JsonResponse
+    {
+        $tickets = Ticket::getAllTicketsByUser($id);
+        if (empty($tickets)) {
+            return response()->json(['message' => 'This user has no tickets'],404);
+        }
+
+        return response()->json([
+            'tickets' => TicketResource::collection($tickets),
+            'message' => 'Retrieved successfully',
+        ],200);
+    }
 }

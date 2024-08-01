@@ -78,4 +78,9 @@ class Ticket extends Model
     {
         return self::where('agent_id', $agentId)->get()->all();
     }
+
+    public static function getAllTicketsByUser(int $userId): ?array
+    {
+        return self::where('user_id', $userId)->get()->all();
+    }
 }

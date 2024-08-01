@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TicketResource;
+use App\Http\Resources\UserResource;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -13,21 +15,9 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index()
     {
-        if (auth()->guard('api')->check()) {
-            $user = auth()->user();
-            $tickets = $user->tickets;
-
-            return response()->json([
-                'user' => $user,
-                'tickets' => $tickets
-            ]);
-        }
-
-        return response()->json([
-            'message' => 'Unauthorized'
-        ], 401);
+        //
     }
 
     /**
@@ -59,6 +49,23 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+
+
+    }
+
+    public function getAllTicketsByUser(): JsonResponse
+    {
+        $user = auth()->guard('api')->user();
+        if (empty($user)) {
+            return response()->json(['message' => 'No user found'], 404);
+        }
+
+        $tickets = Ticket::getAllTicketsByUser($user->id);
+
+        return response()->json([
+            'user' => new UserResource($user),
+            'tickets' => TicketResource::collection($tickets),
+            'message' => 'Retrieved successfully'
+        ], 200);
     }
 }

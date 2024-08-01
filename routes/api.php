@@ -19,10 +19,10 @@ Route::post('/login',[UserAuthController::class,'login']);
 //User routes
 Route::middleware(['auth:api', 'role:user'])->prefix('user')->group(function () {
     Route::post('/ticket/create',[TicketController::class,'store']);
-    Route::get('/tickets',[UserController::class,'index']);
-
     //Close ticket
     Route::post('/ticket/{ticket}/close',[TicketController::class,'updateStatusToClosed']);
+    //Get all tickets by user
+    Route::get('/tickets',[UserController::class,'getAllTicketsByUser']);
 
 });
 
@@ -43,6 +43,7 @@ Route::middleware(['auth:api', 'role:admin'])->prefix('admin')->group(function (
     //user
     Route::get('/users',[AdminController::class,'getAllUsers']);
     Route::get('/user/{id}',[AdminController::class,'getUserById']);
+    Route::get('/user/{id}/tickets',[AdminController::class,'getAllTicketsByUser']);
     //tickets
     Route::get('/tickets',[AdminController::class,'getAllTickets']);
     Route::get('/ticket/{id}',[AdminController::class,'getTicketById']);
