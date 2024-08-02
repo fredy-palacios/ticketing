@@ -83,4 +83,19 @@ class Ticket extends Model
     {
         return self::where('user_id', $userId)->get()->all();
     }
+
+    public static function getAllPendingTickets(): ?array
+    {
+        return self::where('status', 'pending')->get()->all();
+    }
+
+    public static function getAllResolvedTickets(): ?array
+    {
+        return self::where('status', 'resolved')->get()->all();
+    }
+
+    public static function getAllClosedTickets(): ?array
+    {
+        return self::where('status', 'closed')->get()->all();
+    }
 }

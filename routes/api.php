@@ -48,4 +48,7 @@ Route::middleware(['auth:api', 'role:admin'])->prefix('admin')->group(function (
     Route::get('/tickets',[AdminController::class,'getAllTickets']);
     Route::get('/ticket/{id}',[AdminController::class,'getTicketById']);
     Route::get('/agent/{id}/tickets',[AdminController::class,'getAllTicketsByAgent']);
+    Route::get('tickets/pending',[AdminController::class,'getAllPendingTickets']);
+    Route::get('tickets/resolved',[AdminController::class,'getAllResolvedTickets']);
+    Route::get('tickets/closed',[AdminController::class,'getAllClosedTickets']);
 });

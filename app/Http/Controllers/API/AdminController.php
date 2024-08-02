@@ -137,4 +137,46 @@ class AdminController extends Controller
             'message' => 'Retrieved successfully',
         ],200);
     }
+
+    public function getAllPendingTickets(): JsonResponse
+    {
+        $tickets = Ticket::getAllPendingTickets();
+        if (empty($tickets)) {
+            return response()->json(['message' => 'No pending tickets found'],404);
+        }
+
+        return response()->json([
+            'tickets' => TicketResource::collection($tickets),
+            'message' => 'Retrieved successfully',
+        ],200);
+
+    }
+
+    public function getAllResolvedTickets(): JsonResponse
+    {
+        $tickets = Ticket::getAllResolvedTickets();
+        if (empty($tickets)) {
+            return response()->json(['message' => 'No resolved tickets found'],404);
+        }
+
+        return response()->json([
+            'tickets' => TicketResource::collection($tickets),
+            'message' => 'Retrieved successfully',
+        ],200);
+
+    }
+
+    public function getAllClosedTickets(): JsonResponse
+    {
+        $tickets = Ticket::getAllClosedTickets();
+        if (empty($tickets)) {
+            return response()->json(['message' => 'No closed tickets found'],404);
+        }
+
+        return response()->json([
+            'tickets' => TicketResource::collection($tickets),
+            'message' => 'Retrieved successfully',
+        ],200);
+
+    }
 }
