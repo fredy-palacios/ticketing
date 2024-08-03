@@ -26,6 +26,7 @@ return new class extends Migration
             $table->timestamps();
             // foreign keys
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('agent_id')->references('id')->on('users');
 
         });
     }
