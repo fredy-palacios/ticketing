@@ -10,7 +10,7 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['ticket_id', 'sender_id', 'message', 'type'];
+    protected $fillable = ['ticket_id', 'sender_id', 'message'];
 
     public function ticket(): BelongsTo
     {

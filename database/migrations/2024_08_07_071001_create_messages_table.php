@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('ticket_id');
             $table->unsignedBigInteger('sender_id');
             $table->text('message');
-            $table->enum('type', ['user', 'agent']);
             $table->timestamps();
 
             $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');

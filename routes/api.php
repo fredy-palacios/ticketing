@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserAuthController;
 use App\Http\Controllers\API\TicketController;
-use App\Http\Controllers\API\AgentController;
 use App\Http\Controllers\API\UserController;
 
 Route::get('/user', function (Request $request) {

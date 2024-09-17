@@ -30,7 +30,6 @@ class MessageController extends Controller
         $ticket->messages()->create([
             'sender_id' => Auth::id(),
             'message' => $request->message,
-            'type' => $request->type, //DELETE THIS LINE
             'ticket_id' => $ticketId
         ]);
 
