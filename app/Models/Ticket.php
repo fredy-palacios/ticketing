@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class Ticket extends Model
@@ -29,6 +30,11 @@ class Ticket extends Model
     protected static function boot() : void
     {
         parent::boot();
+    }
+
+    public function messages() : HasMany
+    {
+        return $this->hasMany(Message::class);
     }
 
     public function user() : BelongsTo

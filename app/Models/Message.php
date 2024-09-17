@@ -19,6 +19,11 @@ class Message extends Model
 
     public function sender(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public static function getAllMessages($ticketId)
+    {
+        return self::where('ticket_id', $ticketId)->get();
     }
 }
