@@ -16,7 +16,7 @@ The main routes cover operations such as ticket creation and updating, as well a
 
 ## Clone the repository
    ```bash
-   git clone https://github.com/fredy-palacios/FocusWork.git
+   git clone https://github.com/fredy-palacios/ticketing.git
    ```
 
 ## Technologies
